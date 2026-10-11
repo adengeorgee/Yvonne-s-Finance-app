@@ -159,6 +159,23 @@ const lock=$("lock"),lockTitle=$("lockTitle"),lockText=$("lockText"),lockMsg=$("
 function getPin(){return localStorage.getItem("financeOS_pin")||""}
 function showLock(setup=false){lock.classList.remove("hidden");$("resetPinBtn").style.display=(!setup&&getPin())?"block":"none";lockTitle.textContent="Yvonne's Finance Manager";lockText.textContent=setup?"Create a 4-digit PIN. It stays on this iPhone.":"Enter your 4-digit PIN to access your finance data.";lockBtn.textContent=setup?"Create PIN":"Unlock";$("pinSetupHint").textContent=setup?"Create a 4-digit PIN to protect your finance data.":"Your 4-digit PIN protects this finance manager.";lockMsg.textContent="";pin.value="";lock.dataset.setup=setup?"1":"0";setTimeout(()=>pin.focus(),100)}
 function hideLock(){lock.classList.add("hidden");authenticated=true}
+// Bind PIN setup/unlock immediately so unrelated dashboard errors cannot prevent setup.
+$("lockForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ const setup=lock.dataset.setup==="1", value=String(pin.value||"").trim();
+ lockMsg.textContent="";
+ if(!/^\d{4}$/.test(value)){lockMsg.textContent="Use exactly 4 digits.";pin.focus();return;}
+ lockBtn.disabled=true;
+ try{
+   if(setup){
+     localStorage.setItem("financeOS_pin",value);
+     if(localStorage.getItem("financeOS_pin")!==value) throw new Error("Your browser did not save the PIN. Open this site in Safari (not Private Browsing) and try again.");
+     hideLock(); toast("PIN created");
+   } else if(value===getPin()){hideLock();toast("Unlocked");}
+   else throw new Error("Incorrect PIN");
+ }catch(err){lockMsg.textContent=err.message||"Could not save the PIN. Please try again.";pin.value="";pin.focus();}
+ finally{lockBtn.disabled=false;}
+});
 function save(){localStorage.setItem(KEY,JSON.stringify(state));renderAll();$("syncStatus").textContent="Private • saved on this iPhone"}
 function money(n){return "₹"+Math.round(Number(n)||0).toLocaleString("en-IN")}
 function toast(s){let t=$("toast");t.textContent=s;t.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove("show"),1800)}
@@ -221,7 +238,6 @@ function confirmDelete(){let entered=prompt("Enter your 4-digit PIN to delete AL
 $("deleteAllBtn").onclick=confirmDelete;
 $("quickAdd").onclick=()=>goPage("transactions");$("logoutBtn").onclick=()=>{authenticated=false;showLock(false)};
 $("resetPinBtn").onclick=()=>{if(!confirm("Reset the 4-digit PIN? Your transactions, assets, goals and other finance data will be kept. Anyone with access to this iPhone can do this, so keep the phone secure."))return;const a=prompt("Create a new 4-digit PIN:");if(a===null)return;if(!/^\d{4}$/.test(a)){alert("PIN must be exactly 4 digits.");return}const b=prompt("Enter the new PIN again:");if(b===null)return;if(a!==b){alert("PINs do not match. Nothing changed.");return}localStorage.setItem("financeOS_pin",a);hideLock();toast("PIN updated. Your data was kept.")};
-$("lockForm").onsubmit=e=>{e.preventDefault();let setup=lock.dataset.setup==="1",value=String(pin.value||"").trim();lockMsg.textContent="";if(!/^\d{4}$/.test(value)){lockMsg.textContent="Use exactly 4 digits.";pin.focus();return}lockBtn.disabled=true;try{if(setup){localStorage.setItem("financeOS_pin",value);hideLock();toast("PIN created")}else if(value===getPin()){hideLock();toast("Unlocked")}else throw new Error("Incorrect PIN")}catch(err){lockMsg.textContent=err.message;pin.value="";pin.focus()}finally{lockBtn.disabled=false}};
 $("pin").addEventListener("input",()=>{$("pin").value=$("pin").value.replace(/\D/g,"").slice(0,4)});
 $("reviewClose").onclick=()=>$("monthReview").classList.remove("show");renderAll();if(!getPin())showLock(true);else showLock(false);if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js");checkMonthEndReview();
 </script></body></html>
