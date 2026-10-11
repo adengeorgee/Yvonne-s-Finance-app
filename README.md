@@ -1,11 +1,5 @@
-# Yvonne's Finance Manager v12 — Fresh Start
+# Yvonne's Finance Manager v14
 
-This version includes a one-time full reset URL for the current GitHub Pages origin.
+Upload and replace index.html, manifest.json, sw.js, README.md in the existing GitHub Pages repository.
 
-1. Upload and replace index.html, manifest.json, sw.js, README.md in the existing repository.
-2. Open this URL in regular Safari on the same iPhone:
-   https://adengeorgee.github.io/Yvonne-s-Finance-app/?resetall=1
-3. This removes Finance OS records, legacy Finance OS records, the saved PIN, and the month-review flag. It does not clear unrelated Safari website data.
-4. Create a new 4-digit PIN and start from a blank finance dashboard.
-
-Warning: this reset is destructive for the Finance OS data on that device and cannot be undone unless you have an export backup.
+The Forgot PIN button now removes only the saved PIN and returns to the app's built-in PIN setup form. It does not delete finance records. Keep using the same GitHub Pages URL so the browser uses the same local storage origin.
