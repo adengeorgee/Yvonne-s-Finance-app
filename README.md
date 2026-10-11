@@ -1,13 +1,7 @@
-# Yvonne's Finance Manager
+# Yvonne's Finance Manager v10
 
-Mobile-first personal finance PWA for iPhone.
+Update the existing GitHub Pages repository by uploading and replacing `index.html`, `manifest.json`, `sw.js`, and `README.md`.
 
-## Publish on GitHub Pages
-1. Upload `index.html`, `manifest.json`, and `sw.js` to the repository root.
-2. In the repository, open **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**.
-4. Choose branch **main** and folder **/ (root)**, then Save.
-5. Open the published URL in Safari on iPhone.
-6. Tap **Share → Add to Home Screen**.
+PIN recovery is available on the lock screen with **Forgot PIN? Reset PIN without deleting data**. It changes only the local PIN and does not clear transactions, assets, goals, or other finance data. Keep the same GitHub Pages URL so the browser uses the same local storage origin.
 
-The app stores finance data locally on the device. Export a backup before deleting data or clearing Safari website data.
+If the lock screen keeps reappearing, open the website in regular Safari (not Private Browsing), then use the PIN reset option. Do not clear Safari website data.
