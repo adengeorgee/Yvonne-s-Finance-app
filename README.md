@@ -1,7 +1,11 @@
-# Yvonne's Finance Manager v10
+# Yvonne's Finance Manager v12 — Fresh Start
 
-Update the existing GitHub Pages repository by uploading and replacing `index.html`, `manifest.json`, `sw.js`, and `README.md`.
+This version includes a one-time full reset URL for the current GitHub Pages origin.
 
-PIN recovery is available on the lock screen with **Forgot PIN? Reset PIN without deleting data**. It changes only the local PIN and does not clear transactions, assets, goals, or other finance data. Keep the same GitHub Pages URL so the browser uses the same local storage origin.
+1. Upload and replace index.html, manifest.json, sw.js, README.md in the existing repository.
+2. Open this URL in regular Safari on the same iPhone:
+   https://adengeorgee.github.io/Yvonne-s-Finance-app/?resetall=1
+3. This removes Finance OS records, legacy Finance OS records, the saved PIN, and the month-review flag. It does not clear unrelated Safari website data.
+4. Create a new 4-digit PIN and start from a blank finance dashboard.
 
-If the lock screen keeps reappearing, open the website in regular Safari (not Private Browsing), then use the PIN reset option. Do not clear Safari website data.
+Warning: this reset is destructive for the Finance OS data on that device and cannot be undone unless you have an export backup.

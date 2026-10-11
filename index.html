@@ -136,6 +136,17 @@
 <div class="monthReview" id="monthReview"><div class="monthReviewBox"><div class="eyebrow">MONTH-END SAVINGS REVIEW</div><h2 id="reviewTitle">Savings review</h2><p id="reviewText"></p><div class="reviewStats"><div><span>Actual savings</span><b id="reviewActual">₹0</b></div><div><span>Target</span><b id="reviewTarget">₹0</b></div><div><span>Difference</span><b id="reviewDiff">₹0</b></div></div><button class="btn primary" id="reviewClose">Done</button></div></div><div class="toast" id="toast"></div>
 <script>
 const KEY="financeOS_v3";
+// One-time full reset: visiting ?resetall=1 removes Finance OS records and PIN only.
+try {
+  const recoveryUrl = new URL(window.location.href);
+  if (recoveryUrl.searchParams.get("resetall") === "1") {
+    ["financeOS_v3", "financeOS_v2", "financeOS_pin", "financeOS_lastReview"].forEach(k => localStorage.removeItem(k));
+    recoveryUrl.searchParams.delete("resetall");
+    recoveryUrl.searchParams.set("update", "12");
+    window.history.replaceState({}, "", recoveryUrl.pathname + recoveryUrl.search + recoveryUrl.hash);
+  }
+} catch (_) {}
+
 const COLORS={Investments:"#1677ff",Savings:"#23a36a",Necessities:"#ed8b32",Splurge:"#df5362",Education:"#8168e5",Gifts:"#c66aef",Others:"#708090"};
 const defaults={openingBalance:0,liabilities:0,incomeTarget:60000,allocation:[["Investments",20,COLORS.Investments],["Savings",20,COLORS.Savings],["Necessities",30,COLORS.Necessities],["Splurge",10,COLORS.Splurge],["Education",5,COLORS.Education],["Gifts",5,COLORS.Gifts],["Others",10,COLORS.Others]],transactions:[],goals:[{name:"Emergency fund",target:75000,current:42000},{name:"Bike fund",target:250000,current:115000}],assets:[],netWorth:[],plan:{growth:5,returnRate:8}};
 function clone(o){return JSON.parse(JSON.stringify(o))}
