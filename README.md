@@ -1,4 +1,4 @@
-# Aden's Finance Manager
+# Yvonne's Finance Manager
 
 Mobile-first personal finance PWA for iPhone.
 
